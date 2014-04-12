@@ -1,8 +1,16 @@
+#
+# (c) 2012 -- 2014 Georgios Gousios <gousiosg@gmail.com>
+#
+# BSD licensed, see LICENSE in top level dir
+#
+
+source(file = "R/packages.R")
+source(file = "R/cmdline.R")
+
 library(ggplot2)
 library(grid)
 library(reshape)
 library(ellipse)
-source(file = "R/variables.R")
 
 # Plot a list of plots using n columns
 multiplot <- function(plots, cols=1, title = "") {

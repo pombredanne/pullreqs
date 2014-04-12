@@ -1,3 +1,9 @@
+#
+# (c) 2012 -- 2014 Georgios Gousios <gousiosg@gmail.com>
+#
+# BSD licensed, see LICENSE in top level dir
+#
+
 if (! "devtools" %in% installed.packages()) install.packages("devtools")
 library(devtools)
 
@@ -14,3 +20,4 @@ if (!"pROC" %in% installed.packages()) install.packages("pROC")
 if (!"cliffsd" %in% installed.packages()) install_github("cliffs.d", "gousiosg")
 if (!"foreach" %in% installed.packages()) install.packages("foreach")
 if (!"doMC" %in% installed.packages()) install.packages("doMC")
+if (!"optparse" %in% installed.packages()) install.packages("optparse")

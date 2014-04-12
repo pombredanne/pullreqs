@@ -1,8 +1,15 @@
+#
+# (c) 2012 -- 2014 Georgios Gousios <gousiosg@gmail.com>
+#
+# BSD licensed, see LICENSE in top level dir
+#
+
+
 rm(list = ls(all = TRUE))
 
 source(file = "R/packages.R")
 source(file = "R/utils.R")
-source(file = "R/variables.R")
+source(file = "R/cmdline.R")
 
 library(ggplot2)
 

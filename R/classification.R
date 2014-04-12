@@ -1,7 +1,13 @@
+#
+# (c) 2012 -- 2014 Georgios Gousios <gousiosg@gmail.com>
+#
+# BSD licensed, see LICENSE in top level dir
+#
+
 # Shared functions for the classification experiments
 
 source(file = "R/packages.R")
-source(file = "R/variables.R")
+source(file = "R/cmdline.R")
 source(file = "R/utils.R")
 
 library(ROCR)
@@ -13,13 +19,13 @@ library(ggplot2)
 library(foreach)
 
 # Get a project with the appropriate fields by name to run through a classification task
-class.project <- function(dfs, name) {
-  prepare.project.df(get.project(dfs, name))
-}
+# class.project <- function(dfs, name) {
+#   prepare.project.df(get.project(dfs, name))
+# }
 
 # Strip a project data frame from unused columns
 prepare.project.df <- function(a) {
-  a[,c(7:33)]
+  a[,c(7:41)]
 }
 
 rf.train <- function(model, train.set) {
@@ -43,7 +49,7 @@ svm.train <- function(model, train.set) {
 }
 
 binlog.train <- function(model, train.set) {
-  binlog <- glm(model, data=train.set, family = binomial(logit));
+  binlog <- glm(model, data=train.set, family = binomial(cauchit));
   print(summary(binlog))
   binlog
 }
@@ -110,24 +116,4 @@ cross.validation.plot <- function(cvResult, title = "" ,fname = "cv.pdf") {
   p <- ggplot(cvResult, aes(x = run, y = value, colour = classifier)) +
     geom_line(size = 1) + facet_wrap(~variable) + labs(title =title)
   store.pdf(p, plot.location, fname)
-}
-
-rf.varimp <- function(model, sampler, data, num_samples = 5000, runs = 50) {
-
-  result <- foreach(n=1:runs, .combine=rbind) %dopar% {
-      df <- sampler(data, num_samples)
-      rfmodel <- randomForest(model, data=df$train, importance = T,
-                              type = "classification", mtry = 5,
-                              ntree = 2000)
-      print(importance(rfmodel))
-      i <- data.frame(importance(rfmodel))
-      i$var <- row.names(i)
-      i$var <- as.factor(i$var)
-      i$run <- n
-      i
-  }
-
-  result = aggregate(. ~ var, data = result, mean)
-  result = result[with(result, order(-MeanDecreaseAccuracy)),]
-  result[c('var', 'MeanDecreaseAccuracy')]
 }
